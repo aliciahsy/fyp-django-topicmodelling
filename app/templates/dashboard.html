@@ -1,0 +1,71 @@
+<!-- TEMPLATE FOR BACKEND DASHBOARD -->
+
+{% extends 'backend.html' %}
+{% load filters %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-6 custom-col">
+            <div class="info">
+                <h1>Welcome to the backend.</h1>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 custom-col">
+            <div class="image">
+                <img src="https://img.freepik.com/free-vector/it-professionals-are-creating-web-site-laptop-screen-illustration_335657-296.jpg?w=1480&t=st=1692033802~exp=1692034402~hmac=774b6eb10018a6442dbb5b37c9616caa42f111b271d8afc713fb08c616ee5950" alt="Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+    }
+
+    .custom-col {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .info {
+        text-align: left;
+    }
+
+    .info h1 {
+        margin-bottom: 15px;
+    }
+
+    .info p {
+        font-size: 1.2em;
+    }
+
+    .image img {
+        max-width: 800px;
+        height: auto;
+        margin-left: -100px;
+    }
+    @media (max-width: 576px) {
+        .custom-col {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            text-align: center;
+        }
+
+        .image img {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+    }
+</style>
+{% endblock %}

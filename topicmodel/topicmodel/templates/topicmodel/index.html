@@ -1,0 +1,19 @@
+<!-- projectname/topicmodel/templates/topicmodel/index.html -->
+<!DOCTYPE html>
+<html>
+    {% load static %}
+<head>
+    <title>Topic Modeling Results</title>
+</head>
+<body>
+    <h1>Word Cloud</h1>
+    
+    <img src="{% static 'images/cleaned_cloud.png' %}" alt="wordcloud">
+    
+    <h1>Frequency Distribution</h1>
+    <h2>yes</h2>
+    <img src="{% static 'images/freq_dist.png' %}" alt="freq_dist">
+    
+    <!-- Add any other visualizations or data you want to display here -->
+</body>
+</html>

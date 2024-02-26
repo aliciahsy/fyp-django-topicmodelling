@@ -1,0 +1,191 @@
+<!-- TEMPLATE FOR FRONTEND NAVBAR -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Website{% endblock %}</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="navbar-brand">
+            <img class="navbar-logo" src="https://www.nyc.gov.sg/omw/imgs/nyc%20logo.png" alt="">
+        </div>
+        <span class="navbar-toggler" role="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars toggler-icon"></i>
+        </span>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="nav-search-container">
+                <form class="form-inline my-2 my-lg-0 flex-grow-1">
+                    <input class="nav-search flex-grow-1" type="search" placeholder="Search" aria-label="Search">
+                </form>
+            </div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <i class="fas fa-home nav-icon"></i>
+                        <span class="nav-name">HOME</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'video_cards' %}">
+                        <i class="fas fa-video nav-icon"></i>
+                        <span class="nav-name">VIDEOS</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard' %}">
+                        <i class="fas fa-user-lock nav-icon"></i>
+                        <span class="nav-name">BACKEND</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+<style>
+    body {
+        font-family: 'Nunito', sans-serif;
+    }
+    .navbar {
+        background-color: #36008d;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-logo {
+        width: 100px;
+        margin: 15px;
+    }
+
+    .nav-search-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .nav-search {
+        border: 1px solid white;
+        padding: 10px;
+        border-radius: 20px;
+        height: 40px;
+        min-width: 100px;
+        font-size: 16px;
+        width: 100%;
+        transition: border-color 0.3s, background-color 0.3s;
+    }
+
+    .nav-search:hover {
+        border-color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-left: 29px;
+    }
+
+    .nav-item:last-child {
+        margin-right: 13px;
+    }
+    
+    .nav-link {
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: color 0.3s;
+    }
+    
+    .nav-link:hover {
+        color: #f8f9fa;
+    }
+
+    .nav-icon {
+        color: white;
+        font-size: 40px;
+        margin-bottom: 5px;
+        transition: color 0.3s;
+    }
+
+    .nav-item:hover .nav-icon {
+        color: #34bdb3;
+    }
+
+    .nav-name {
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    .nav-item:hover .nav-name {
+        color: #34bdb3;
+    }
+
+    .nav-item.active .nav-link {
+        color: #34bdb3;
+    }
+    
+    .nav-item.active .nav-icon {
+        color: #34bdb3;
+    }
+    
+    .nav-item.active .nav-name {
+        color: #34bdb3;
+    }
+
+    @media (max-width: 991.5px) {
+        .toggler-icon {
+            color: white;
+            font-size: 40px;
+        }
+
+        .nav-icon {
+            display: none;
+        }
+
+        .nav-name {
+            font-size: 20px;
+        }
+
+        .nav-search {
+            width: 95%;
+            margin: auto;
+        }
+
+        .nav-item:last-child {
+            margin-right: 0px;
+        }
+    }
+</style>
+<script>
+    var currentPath = window.location.pathname;
+
+    var navLinks = document.querySelectorAll('.nav-link');
+
+    for (var i = 0; i < navLinks.length; i++) {
+        var link = navLinks[i];
+        var linkPath = link.getAttribute('href');
+        
+        if (linkPath === currentPath) {
+            link.parentNode.classList.add('active');
+        }
+    }
+</script>
+
+</html>

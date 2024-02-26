@@ -1,0 +1,77 @@
+<!-- TEMPLATE FOR BACKEND VIDEO DATABASE -->
+
+{% extends 'backend.html' %}
+
+{% load filters %}
+
+{% block title %}Video Database{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="text-center mb-4">Video Database</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="text-center col-1">#</th>
+                    <th scope="col" class="text-center">Video Title</th>
+                    <th scope="col" class="text-center col-1">Video Type</th>
+                    <th scope="col" class="text-center">Video URL</th>
+                    <th scope="col" class="text-center">Video Transcript</th>
+                    <th scope="col" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                <tr>
+                    <td class="align-middle text-center">{{ forloop.counter }}</td>
+                    <td class="align-middle text-center">{{ video.VideoTitle }}</td>
+                    <td class="align-middle text-center">{{ video.VideoType }}</td>
+                    <td class="align-middle text-center">{{ video.VideoURL }}</td>
+                    <td class="align-middle text-center">{{ video.VideoTranscript.name|basename }}</td>
+                    <td class="align-middle text-center">
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'video_details' video.pk %}" class="btn btn-info btn-circle btn-m action-btn" data-toggle="tooltip" data-placement="top" title="Details">
+                                <i class="fas fa-info-circle action-icon"></i>
+                            </a>
+                            <a href="{% url 'update_video' video.pk %}" class="btn btn-primary btn-circle btn-m action-btn" data-toggle="tooltip" data-placement="top" title="Edit">
+                                <i class="fas fa-edit action-icon"></i>
+                            </a>
+                            <a href="{% url 'delete_video' video.pk %}" class="btn btn-danger btn-circle btn-m action-btn" data-toggle="tooltip" data-placement="top" title="Delete">
+                                <i class="fas fa-trash-alt action-icon"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-icon {
+        font-size: 20px;
+        padding: 3px;
+    }
+</style>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('.btn-circle').on('click', function () {
+            $(this).css('cursor', 'wait');
+            
+            setTimeout(function () {
+                $('.btn-circle').css('cursor', 'default');
+            }, 2000);
+        });
+    });
+</script>
+{% endblock %}

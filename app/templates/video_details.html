@@ -1,0 +1,286 @@
+<!-- TEMPLATE FOR BACKEND VIDEO DETAILS PAGE -->
+
+{% extends 'backend.html' %}
+
+{% load filters %}
+{% load static %}
+
+{% block title %}Video Details{% endblock %}
+
+{% block content %}
+{% if error_message %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger error-message">
+                Error: {{ error_message }}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+{% for main_topic, texts, chart_data, word_cloud_data, pie_chart_data, segmented_transcript in results %}
+<div class="container-fluid p-3">
+    <h1 class="title mb-4">Video Details</h1>
+    <div class="row">
+        <div class="col-md-5 col-sm-12">
+            <div class="video-iframe-container">
+                <div class="embed-responsive embed-responsive-16by9 custom-iframe">
+                    <iframe id="video-iframe" class="embed-responsive-item"
+                            src="{{ video.VideoURL|replace_youtube_url:'youtu.be, www.youtube.com/embed' }}"
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-sm-12">
+            <div class="video-details">
+                <p class="video-title">{{ video.VideoTitle }}</p>
+                <p class="video-id">ID: {{ video.VideoID }}</p>
+                <p class="video-type">Type: {{ video.VideoType }}</p>
+                <hr>
+                <p class="details-subtitle">All Main Topics:</p>
+                <ul class="main-topics-list horizontal-list">
+                    {% for topic, score in main_topic %}
+                    <li>{{ topic }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="tm-title">Visualisation Charts</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="chart-container">
+                <p class="text-center">Topics bar chart</p>
+                <img src="data:image/png;base64,{{ chart_data }}" alt="Bar Chart" class="img-fluid custom-chart">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="chart-container">
+                <p class="text-center">Word cloud of transcript</p>
+                <img src="data:image/png;base64,{{ word_cloud_data }}" alt="Word Cloud" class="img-fluid custom-chart">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="chart-container">
+                <p class="text-center">Topic distribution pie chart</p>
+                <img src="data:image/png;base64,{{ pie_chart_data }}" alt="Pie Chart" class="img-fluid custom-chart">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="tm-title">Segmented Transcript</h3>
+            {% for segment in segmented_transcript %}
+            <div class="segment-box">
+                <div class="segment-header">#{{ segment.Segment }}</div>
+                <div class="segment-content">{{ segment.Text }}</div>
+                <!-- <div class="segment-topic">{{ segment.Dominant_Topic }}</div> -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<!-- HTML OF BAG OF WORDS & TF-IDF -->
+
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <h3 class="details-subtitle">Bag of Words</h3>
+            <table class="table bag-of-words-table">
+                <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in bow_data.iterrows %}
+                    <tr>
+                        <td>{{ row.Word }}</td>
+                        <td>{{ row.Frequency }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <h3 class="details-subtitle">TF-IDF</h3>
+            <table class="table tfidf-table">
+                <thead>
+                    <tr>
+                        {% for column in tfidf_data.columns %}
+                        <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in tfidf_data.iterrows %}
+                    <tr>
+                        {% for column in tfidf_data.columns %}
+                        <td>{{ row.column }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+</div>
+{% endfor %}
+{% endif %}
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .custom-iframe {
+        border: 2px solid #d1d1d1;
+        border-radius: 10px;
+        height: 0;
+        padding-bottom: 56.25%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .custom-iframe iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .video-details {
+        overflow: auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-title {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .main-topics-list {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .main-topics-list li {
+        margin-right: 7px;
+    }
+
+    .main-topics-list li:not(:last-child):after {
+        content: "|";
+        margin-left: 7px;
+        color: #999;
+    }
+
+    .transcript-list {
+        padding-left: 20px;
+    }
+
+    .chart-container {
+        border-radius: 10px;
+        border: 3px solid #f7f7f7;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    .details-subtitle {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .segment-box {
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f7f7f7;
+    }
+    
+    .segment-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .segment-content {
+        margin-top: 10px;
+    }
+
+    .title {
+        font-weight: bold;
+    }
+
+    .tm-title {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .row {
+            flex-direction: column;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .tm-title {
+            text-align: center;
+        }
+
+        .video-title {
+            font-size: 20px;
+        }
+        
+        .col-md-5,
+        .col-md-7,
+        .col-sm-12 {
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .video-details {
+            margin-top: 20px;
+            max-height: calc(100vh - 200px);
+        }
+    }
+</style>
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        const videoIframe = document.getElementById("video-iframe");
+        const videoDetailsContainer = document.querySelector(".video-details");
+
+        function setVideoDetailsHeight() {
+            const iframeHeight = videoIframe.clientHeight;
+            videoDetailsContainer.style.maxHeight = iframeHeight + "px";
+        }
+
+        setVideoDetailsHeight();
+
+        window.addEventListener("resize", setVideoDetailsHeight);
+    });
+</script>
+{% endblock %}

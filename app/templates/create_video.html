@@ -1,0 +1,85 @@
+<!-- TEMPLATE FOR BACKEND VIDEO CREATE FORM -->
+
+{% extends 'backend.html' %}
+
+{% block title %}Create Video{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="page-title text-center mb-4">Create Video</h1>
+                    <form method="post" enctype="multipart/form-data" class="video-form" onsubmit="return confirm('Proceed to save?');">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.VideoTitle.id_for_label }}" class="form-label">Video Title:</label>
+                            <input type="text" id="{{ form.VideoTitle.id_for_label }}" name="{{ form.VideoTitle.html_name }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.VideoType.id_for_label }}" class="form-label">Video Type:</label>
+                            <select id="{{ form.VideoType.id_for_label }}" name="{{ form.VideoType.html_name }}" class="form-control" required>
+                                {% for value, label in form.VideoType.field.choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.VideoURL.id_for_label }}" class="form-label">Video URL:</label>
+                            <input type="url" id="{{ form.VideoURL.id_for_label }}" name="{{ form.VideoURL.html_name }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.VideoTranscript.id_for_label }}" class="form-label">Video Transcript (CSV):</label>
+                            <input type="file" id="{{ form.VideoTranscript.id_for_label }}" name="{{ form.VideoTranscript.html_name }}" class="form-control-file" accept=".csv" required>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .page-title {
+        font-size: 35px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-form .form-label {
+        font-weight: bold;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}

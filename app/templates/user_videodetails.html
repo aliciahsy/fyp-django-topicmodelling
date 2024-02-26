@@ -1,0 +1,212 @@
+<!-- TEMPLATE FOR FRONTEND VIDEO WATCHING PAGE-->
+
+{% extends 'frontend.html' %}
+
+{% load filters %}
+{% load static %}
+
+{% block title %}Watch Video{% endblock %}
+
+{% block content %}
+<div class="video-details">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="video-title">Watch Video</h1>
+                <div class="video-wrapper">
+                    <div class="embed-responsive embed-responsive-16by9 video-iframe">
+                        <iframe id="video-iframe" class="embed-responsive-item"
+                            src="{{ video.VideoURL|replace_youtube_url:'youtu.be, www.youtube.com/embed' }}"
+                            frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="description-box">
+                        <p class="video-desc"><br>{{ video.VideoTitle }} | {{ video.VideoType }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 divider">
+                <div class="divider-line"></div>
+            </div>
+            <div class="col-md-3">
+                <h1 class="transcript-title">Transcript</h1>
+                <div class="transcript-container">
+                    <div class="transcript-list">
+                        <ul id="transcript-list">
+                            {% for transcript_time, transcript_text in transcripts %}
+                            <li data-time="{{ transcript_time }}">
+                                <span class="transcript-time">{{ transcript_time }}</span>
+                                <span class="transcript-text">{{ transcript_text }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .video-details {
+        margin-top: 30px;
+    }
+
+    .container-fluid {
+        padding-left: 2%;
+        padding-right: 2%;
+        max-width: 100%;
+    }
+
+    .video-title,
+    .transcript-title {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .transcript-title {
+        text-align: center;
+    }
+
+    .video-wrapper {
+        margin-bottom: 20px;
+    }
+
+    .video-iframe {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .video-iframe iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .description-box {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 3px solid #e0e0e0;
+        border-top: none;
+        border-radius: 0 0 20px 20px;
+        margin-top: -15px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-desc {
+        font-weight: bold;
+        color: #333;
+        font-size: 20px;
+    }
+
+    .transcript-container {
+        border: 1px solid #e0e0e0;
+        background-color: #f9f9f9;
+        padding: 7px;
+        overflow-y: auto;
+        min-width: 200px;
+    }
+
+    .transcript-list ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-top: 0;
+    }
+
+    .transcript-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .transcript-list li:hover {
+        background-color: #f0f0f0;
+    }
+
+    .transcript-time {
+        font-weight: bold;
+        color: #555;
+        min-width: 80px;
+    }
+
+    .transcript-text {
+        flex: 1;
+        margin-left: 15px;
+        color: #333;
+        word-wrap: break-word;
+        max-width: calc(100% - 95px);
+    }
+
+    .divider-line {
+        background-color: #e0e0e0;
+        margin-bottom: 23px;
+        border-radius: 100px;
+    }
+
+    .divider {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+        .divider-line {
+            width: 100%;
+            height: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .transcript-container {
+            margin-bottom: 30px;
+        }
+
+        .video-title {
+            text-align: center;
+        }
+
+        .video-desc {
+            font-size: 17px;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .transcript-container {
+            transition: none;
+        }
+
+        .divider-line {
+            width: 10px;
+            height: 85%;
+        }
+    }
+
+    .highlight {
+        background-color: #f0f0f0;
+    }
+</style>
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        const videoIframe = document.getElementById("video-iframe");
+        const transcriptContainer = document.querySelector(".transcript-container");
+
+        function setTranscriptHeight() {
+            const iframeHeight = videoIframe.clientHeight;
+            transcriptContainer.style.maxHeight = iframeHeight + "px";
+        }
+
+        setTranscriptHeight();
+
+        window.addEventListener("resize", setTranscriptHeight);
+    });
+</script>
+{% endblock %}

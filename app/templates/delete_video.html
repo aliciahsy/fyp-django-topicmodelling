@@ -1,0 +1,90 @@
+<!-- TEMPLATE FOR BACKEND VIDEO DELETE FORM -->
+
+{% extends 'backend.html' %}
+
+{% load filters %}
+
+{% block title %}Delete Video{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="page-title text-center mb-4">Delete Video</h1>
+                    <p class="text-center">{{ video.VideoTitle }}</p>
+                    <div class="video-thumbnail text-center mb-4">
+                        {% with video_id=video.VideoURL|split:'/'|last %}
+                        {% with thumbnail_url="https://img.youtube.com/vi/"|add:video_id|add:"/0.jpg" %}
+                        <img src="{{ thumbnail_url }}" alt="Video Thumbnail">
+                        {% endwith %}
+                        {% endwith %}
+                    </div>
+                    <div class="text-center mt-4">
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirmDelete()">Delete</button>
+                        </form>
+                        <a href="{% url 'view_video' %}" class="btn btn-secondary mr-2">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this video?");
+    }
+</script>
+<style>
+    .page-title {
+        font-size: 35px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-thumbnail img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 20px;
+    }
+
+    .btn-secondary {
+        width: 100px;
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn-danger {
+        width: 100px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,301 @@
+<!-- TEMPLATE FOR FRONTEND VIDEO LIBRARY -->
+
+{% extends 'frontend.html' %}
+
+{% load filters %}
+
+{% block title %}Video Library{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <div class="row">
+                {% if videos %}
+                <div class="col-md-12 mb-4">
+                    <h1 class="video-title">VIDEO LIBRARY</h1>
+                    {% with video_count=videos|length %}
+                    <p class="video-count-text">
+                        Explore our current library of {{ video_count }} videos to know more about your interests. Use the category filter below to help you navigate the videos!
+                    </p>
+                    {% endwith %}
+                    <hr>
+                </div>
+                <div class="col-md-12 mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="browse-title">BROWSE ALL</h1>
+                        <div class="search-filter">
+                            <label for="video-type-select">Filter by Video Type:</label>
+                            <div class="filter-content">
+                                <select id="video-type-select" class="custom-select">
+                                    <option value="all">All</option>
+                                    <option value="Speech">Speech</option>
+                                    <option value="Webinar">Webinar</option>
+                                    <option value="Dialogue">Dialogue</option>
+                                    <option value="Podcast">Podcast</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="no-videos-message" style="display: none;">No videos available with that video type!</p>
+                </div>
+                {% for video in videos %}
+                <div class="col-lg-3 col-md-4 col-sm-6 video-card" data-videotype="{{ video.VideoType }}">
+                    <div class="card">
+                        <div class="card-image">
+                            {% with video_id=video.VideoURL|split:'/'|last %}
+                            {% with thumbnail_url="https://img.youtube.com/vi/"|add:video_id|add:"/0.jpg" %}
+                            <img src="{{ thumbnail_url }}" alt="Video Thumbnail">
+                            {% endwith %}
+                            {% endwith %}
+                        </div>
+                        <div class="card-content">
+                            <h4>{{ video.VideoTitle }}</h4>
+                            <p class="video-type">{{ video.VideoType }}</p>
+                            <hr>
+                            <p class="topic-title">Main Topics:</p>
+                            {% if video.main_topics %}
+                            <ul class="main-topics-list">
+                                {% for topic, score in video.main_topics|slice:":3" %}
+                                <li>{{ topic }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p class="no-topics">Working on it! <i class="fa-solid fa-gear"></i></p>
+                            {% endif %}
+                            <a href="{% url 'user_videodetails' video.VideoID %}" target="_blank" class="find-out-more">Find out more</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12">
+                    <p class="no-videos">No videos available.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .card-content {
+        padding: 20px;
+        background-color: #ffffff;
+        height: 350px;
+    }
+    
+    .video-card {
+        position: relative;
+    }
+    
+    .container-title{
+        min-height: 4.5em;
+        min-width: 10vw;
+    }
+
+    .card h4 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card p.video-type {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #777;
+    }
+    
+    .main-topics-list li {
+        margin-left: -20px;
+        color: #555;
+    }
+
+    .no-topics {
+        color: #555;
+    }
+
+    .no-topics .fa-triangle-exclamation{
+        color: #555;
+    }
+
+    .find-out-more {
+        display: block;
+        width: 92%;
+        margin-top: 20px;
+        margin-bottom: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #36008d;
+        color: white;
+        text-align: center;
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        transition: .3s ease-in-out;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+    }
+
+    .find-out-more:hover {
+        background-color: #f4edff;
+        color: #2a2938;
+        text-decoration: none;
+        transition: .3s ease-in-out;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-filter {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .custom-select {
+        appearance: none;
+        background-color: #f5f5f5;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        width: 300px;
+        margin-top: 5px;
+    }
+
+    .search-filter label {
+        margin-right: 5px;
+        margin-bottom: -3px;
+        align-items: center;
+    }
+
+    .custom-select:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card[style="display: none;"] {
+        display: none !important;
+    }
+
+    .no-videos {
+        margin: 0;
+        font-size: 16px;
+        color: #777;
+    }
+
+    .video-title,
+    .browse-title {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .video-title {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .browse-title {
+        font-size: 28px;
+    }
+
+    .video-count-text {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 50px;
+    }
+
+    .card .topic-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    
+    .card h4 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .card p.video-type {
+        font-size: 14px;
+        color: #777;
+    }
+
+    @media (max-width: 768px) {
+
+        .video-title {
+            font-size: 35px;
+        }
+
+        .video-count-text {
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .card h4 {
+            font-size: 16px;
+        }
+
+        .custom-select {
+            width: 82px;
+        }
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectElement = document.getElementById("video-type-select");
+        const videoCards = document.querySelectorAll(".video-card");
+        const noVideosMessage = document.querySelector(".no-videos-message");
+    
+        selectElement.addEventListener("change", function () {
+            const selectedValue = selectElement.value;
+            let videosFound = false;
+    
+            videoCards.forEach(card => {
+                if (selectedValue === "all" || card.dataset.videotype === selectedValue) {
+                    card.style.display = "block";
+                    videosFound = true;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+    
+            if (videosFound) {
+                noVideosMessage.style.display = "none";
+            } else {
+                noVideosMessage.style.display = "block";
+            }
+        });
+    });    
+</script>
+{% endblock %}

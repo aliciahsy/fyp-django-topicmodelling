@@ -1,0 +1,372 @@
+<!-- TEMPLATE FOR BACKEND NAVBAR -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Website{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_content">
+            <div class="header_toggle">
+                <i class="fas fa-bars" id="header-toggle"></i>
+            </div>
+            <p class="admin-text">ADMIN BACKEND</p>
+        </div>
+        <a href="{% url 'home' %}" class="user-circle" title="Go to frontend view">
+            <i class="fas fa-user-circle"></i>
+        </a>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div>
+                <div class="nav_logo">
+                    <img class="logo-expanded" src="https://www.nyc.gov.sg/omw/imgs/nyc%20logo.png" alt="">
+                    <i class="logo-collapsed fas fa-star-of-life"></i>
+                </div>
+                <div class="nav_list">
+                    <a href="{% url 'dashboard' %}" class="nav_link">
+                        <i class="fas fa-tachometer-alt nav_icon"></i>
+                        <span class="nav_name">Dashboard</span>
+                    </a>
+                    <a href="{% url 'view_video' %}" class="nav_link">
+                        <i class="fas fa-video nav_icon"></i>
+                        <span class="nav_name">Videos</span>
+                    </a>
+                    <a href="{% url 'create_video' %}" class="nav_link">
+                        <i class="fas fa-folder-plus nav_icon"></i>
+                        <span class="nav_name">Create</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav_link">
+                <i class="fas fa-cog nav_icon"></i>
+                <span class="nav_name">TM_BERT</span>
+            </div>
+        </nav>
+    </div>
+    <div class="height-100" style="margin-top: 100px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+<style>
+    :root {
+        --header-height: 3rem;
+        --nav-width: 68px;
+        --first-color: #36008d;
+        --first-color-light: #AFA5D9;
+        --white-color: #F7F6FB;
+        --body-font: 'Nunito', sans-serif;
+        --normal-font-size: 1rem;
+        --z-fixed: 100
+    }
+    
+    *,
+    ::before,
+    ::after {
+        box-sizing: border-box
+    }
+    
+    body {
+        position: relative;
+        margin: var(--header-height) 0 0 0;
+        padding: 0 1rem;
+        font-family: var(--body-font);
+        font-size: var(--normal-font-size);
+        transition: .5s
+    }
+    
+    a {
+        text-decoration: none
+    }
+    
+    .header {
+        width: 100%;
+        height: var(--header-height);
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        background-color: var(--white-color);
+        z-index: var(--z-fixed);
+        transition: .5s;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header_content {
+        display: flex;
+        align-items: center;
+    }
+    
+    .admin-text {
+        margin: auto;
+        margin-left: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--first-color);
+    }
+    
+    .header_toggle {
+        color: var(--first-color);
+        font-size: 1.5rem;
+        cursor: pointer
+    }
+
+    .user-circle {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: var(--first-color-light);
+        color: var(--white-color);
+        font-size: 1.5rem;
+        overflow: hidden;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .user-circle:hover {
+        background-color: var(--first-color);
+        color: var(--white-color);
+        text-decoration: none
+    }
+
+    .user-circle i {
+        margin-top: 2px;
+    }
+    
+    
+    .header_img img {
+        width: 40px
+    }
+    
+    .l-navbar {
+        position: fixed;
+        top: 0;
+        left: -30%;
+        width: var(--nav-width);
+        height: 100vh;
+        background-color: var(--first-color);
+        padding: .5rem 1rem 0 0;
+        transition: .5s;
+        z-index: var(--z-fixed)
+    }
+    
+    .nav {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden
+    }
+    
+    .nav_logo,
+    .nav_link {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        column-gap: 1rem;
+        padding: .5rem 0 .5rem 1.5rem
+    }
+    
+    .nav_logo {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .logo-expanded {
+        display: none;
+    }
+    
+    .logo-collapsed {
+        font-size: 1.5rem;
+        color: var(--white-color);
+    }
+    
+    .nav_logo-icon {
+        font-size: 1.25rem;
+        color: var(--white-color);
+    }
+    
+    .nav_logo-name {
+        color: var(--white-color);
+        font-weight: 700;
+    }
+    
+    .nav_link {
+        position: relative;
+        color: var(--first-color-light);
+        margin-bottom: 1.5rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        transition: .3s;
+        display: flex;
+    }
+    
+    .nav_link i {
+        margin-right: 0.5rem;
+    }
+    
+    .nav_link:hover {
+        color: var(--white-color);
+        text-decoration: none;
+    }
+    
+    .nav_icon {
+        font-size: 1.25rem;
+    }
+    
+    .show {
+        left: 0
+    }
+    
+    .body-pd {
+        padding-left: calc(var(--nav-width) + 1rem)
+    }
+    
+    .active {
+        color: var(--white-color)
+    }
+    
+    .active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: 32px;
+        background-color: var(--white-color)
+    }
+    
+    .height-100 {
+        height: 100vh
+    }
+    
+    @media screen and (max-width: 768px) {
+        .header_toggle {
+            font-size: 1.2rem;
+        }
+    
+        .nav_link {
+            font-size: 0.9rem;
+        }
+    
+        .logo-expanded {
+            width: 25px;
+            display: none;
+        }
+    
+        .logo-collapsed {
+            display: block;
+        }
+    }
+    
+    @media screen and (min-width: 768px) {
+        body {
+            margin: calc(var(--header-height) + 1rem) 0 0 0;
+            padding-left: calc(var(--nav-width) + 2rem)
+        }
+    
+        .header {
+            height: calc(var(--header-height) + 1rem);
+            padding: 0 2rem 0 calc(var(--nav-width) + 2rem)
+        }
+    
+        .header_img {
+            width: 40px;
+            height: 40px
+        }
+    
+        .header_img img {
+            width: 45px
+        }
+
+        .logo-expanded {
+            width: 160px;
+        }
+    
+        .l-navbar {
+            left: 0;
+            padding: 1rem 1rem 0 0;
+            width: var(--nav-width);
+        }
+    
+        .show {
+            width: calc(var(--nav-width) + 156px);
+        }
+    
+        .body-pd {
+            padding-left: calc(var(--nav-width) + 188px)
+        }
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+            const toggle = document.getElementById(toggleId),
+                nav = document.getElementById(navId),
+                bodypd = document.getElementById(bodyId),
+                headerpd = document.getElementById(headerId);
+    
+            if (toggle && nav && bodypd && headerpd) {
+                toggle.addEventListener('click', () => {
+                    nav.classList.toggle('show');
+                    toggle.classList.toggle('fa-times');
+                    bodypd.classList.toggle('body-pd');
+                    headerpd.classList.toggle('body-pd');
+    
+                    const userCircle = document.querySelector('.user-circle');
+                    const logoExpanded = document.querySelector('.logo-expanded');
+                    const logoCollapsed = document.querySelector('.logo-collapsed');
+    
+                    if (nav.classList.contains('show')) {
+                        userCircle.style.backgroundColor = 'var(--first-color)';
+                        logoExpanded.style.display = 'block';
+                        logoCollapsed.style.display = 'none';
+                    } else {
+                        userCircle.style.backgroundColor = 'var(--first-color-light)';
+                        logoExpanded.style.display = 'none';
+                        logoCollapsed.style.display = 'block';
+                    }
+                });
+    
+                const userCircle = document.querySelector('.user-circle');
+                userCircle.addEventListener('mouseover', () => {
+                    userCircle.style.backgroundColor = 'var(--first-color)';
+                });
+                userCircle.addEventListener('mouseout', () => {
+                    const nav = document.getElementById(navId);
+                    if (!nav.classList.contains('show')) {
+                        userCircle.style.backgroundColor = 'var(--first-color-light)';
+                    }
+                });
+            }
+        }
+    
+        showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
+
+        const currentPath = window.location.pathname;
+
+        const linkElements = document.querySelectorAll('.nav_link');
+
+        linkElements.forEach(link => {
+            const linkPath = link.getAttribute('href');
+            if (currentPath === linkPath) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+</html>
